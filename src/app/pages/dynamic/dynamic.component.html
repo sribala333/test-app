@@ -1,0 +1,59 @@
+<div class="container">
+    <h4>Form</h4>
+    <form [formGroup]="userForm">
+
+        <div fxFlexLayout="row" class="container" fxLayoutGap="10px">
+            <div fxFlex>
+                <mat-form-field appearance="outline">
+                    <mat-label>User Name</mat-label>
+                    <input matInput placeholder="User Name" formControlName="userName" required>
+                    <mat-error *ngIf="userForm?.get('userName')?.errors?.required">User name is required</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <ng-container formArrayName="userDetails" *ngFor="let g of u.controls; let i = index;let l =last">
+            <div fxFlexLayout="row" class="container" fxLayoutGap="10px" [formGroupName]="i">
+                <div fxFlex>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Question - {{i+1}}</mat-label>
+                        <mat-select placeholder="Question" formControlName="ques" required>
+                            <mat-option (onSelectionChange)="changeQues(q.quesId,j)"
+                                *ngFor="let q of quesList;let j= index" [value]="q.quesId">{{q.quesName}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="g?.get('ques')?.errors?.required">Question is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Answer - {{i+1}}</mat-label>
+                        <mat-select placeholder="Answer" formControlName="ans" required>
+                            <mat-option *ngFor="let a of getResDrop(userForm.controls['userDetails']?.value[i]?.ques)"
+                                [value]="a.ansId">{{a.ans}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="g?.get('ans')?.errors?.required">Answer is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex>
+                    <span>
+                        <button mat-button (click)="addField()" *ngIf="l">add</button> &nbsp;
+                        <button mat-button (click)="removeField(i)" *ngIf="u.controls.length > 1">remove</button></span>
+                </div>
+            </div>
+        </ng-container>
+        <div fxFlexLayout="row" class="container" fxLayoutGap="10px">
+            <div fxFlex>
+                <button mat-button (click)="saveDetails()">SAVE</button>
+                <div fxFlex>
+                    <button mat-button (click)="patchDetails()">PATCH</button> </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{formDetails | json}}
+
+<form [formGroup]="userForm">
+ <ngx-mat-autocomplete-control  [control]="userForm.controls['userList']" [options]="quesList"
+  [refId]="'quesId'"
+        [refName]="'quesName'" [label]="'users'" [disabled]="false" [required]="true"
+         [appearance]="'outline'"  ></ngx-mat-autocomplete-control>
+</form>

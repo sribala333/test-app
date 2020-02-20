@@ -11,13 +11,15 @@ import { DynamicComponent } from './pages/dynamic/dynamic.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NgxMatAutocompleteControlModule } from 'ngx-mat-autocomplete-control';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ContactComponent } from './pages/contact/contact.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DynamicComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

@@ -99,9 +99,5 @@ export class DynamicComponent implements OnInit {
   }
   removeField(i) {
     this.u.removeAt(i);
-  }
-  patchDetails() {
-    this.ngOnInit();
-    this.allocationForm.patchValue(this.formDetails);
-  }
+  } 
 }

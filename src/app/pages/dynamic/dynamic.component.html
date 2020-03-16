@@ -1,36 +1,56 @@
 <div class="container">
     <h4>Form</h4>
-    <form [formGroup]="userForm">
+    <form [formGroup]="allocationForm">
 
         <div fxFlexLayout="row" class="container" fxLayoutGap="10px">
             <div fxFlex>
                 <mat-form-field appearance="outline">
-                    <mat-label>User Name</mat-label>
-                    <input matInput placeholder="User Name" formControlName="userName" required>
-                    <mat-error *ngIf="userForm?.get('userName')?.errors?.required">User name is required</mat-error>
+                    <mat-label>Region Name </mat-label>
+                    <mat-select placeholder="Region Name" formControlName="regionId" required>
+                        <mat-option 
+                            *ngFor="let r of regionList;let j= index" [value]="r.regionId">{{r.regionName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="allocationForm?.get('regionId')?.errors?.required">Region name is required</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+                <mat-form-field appearance="outline">
+                    <mat-label>Godown Name </mat-label>
+                    <mat-select placeholder="Godown Name" formControlName="godownId" required>
+                        <mat-option 
+                            *ngFor="let g of godownList;let j= index" [value]="g.godownId">{{g.godownName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="allocationForm?.get('godownId')?.errors?.required">Godown name is required</mat-error>
                 </mat-form-field>
             </div>
         </div>
-        <ng-container formArrayName="userDetails" *ngFor="let g of u.controls; let i = index;let l =last">
+        <ng-container formArrayName="materialDetails" *ngFor="let g of u.controls; let i = index;let l =last">
             <div fxFlexLayout="row" class="container" fxLayoutGap="10px" [formGroupName]="i">
                 <div fxFlex>
                     <mat-form-field appearance="outline">
-                        <mat-label>Question - {{i+1}}</mat-label>
-                        <mat-select placeholder="Question" formControlName="ques" required>
-                            <mat-option (onSelectionChange)="changeQues(q.quesId,j)"
-                                *ngFor="let q of quesList;let j= index" [value]="q.quesId">{{q.quesName}}</mat-option>
+                        <mat-label>Material Name </mat-label>
+                        <mat-select placeholder="Material Name" formControlName="materialId" required>
+                            <mat-option (onSelectionChange)="changeMaterial(m.materialId,j)"
+                                *ngFor="let m of materialList;let j= index" [value]="m.materialId">{{m.materialName}}</mat-option>
                         </mat-select>
-                        <mat-error *ngIf="g?.get('ques')?.errors?.required">Question is required</mat-error>
+                        <mat-error *ngIf="g?.get('materialId')?.errors?.required">Material name is required</mat-error>
                     </mat-form-field>
                 </div>
                 <div fxFlex>
                     <mat-form-field appearance="outline">
-                        <mat-label>Answer - {{i+1}}</mat-label>
-                        <mat-select placeholder="Answer" formControlName="ans" required>
-                            <mat-option *ngFor="let a of getResDrop(userForm.controls['userDetails']?.value[i]?.ques)"
-                                [value]="a.ansId">{{a.ans}}</mat-option>
+                        <mat-label>SubMaterial Name </mat-label>
+                        <mat-select placeholder="SubMaterial Name" formControlName="subMaterialId" required>
+                            <mat-option *ngFor="let s of getResDrop(allocationForm.controls['materialDetails']?.value[i]?.materialId)"
+                                [value]="s.subMaterialId">{{s.subMaterialName}}</mat-option>
                         </mat-select>
-                        <mat-error *ngIf="g?.get('ans')?.errors?.required">Answer is required</mat-error>
+                        <mat-error *ngIf="g?.get('subMaterialId')?.errors?.required">SubMaterial name is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Allocated quantity</mat-label>
+                        <input matInput placeholder="Allocated quantity" formControlName="allocatedQuantity" required>
+                        <mat-error *ngIf="g?.get('allocatedQuantity')?.errors?.required">Allocated quantity is required</mat-error>
                     </mat-form-field>
                 </div>
                 <div fxFlex>
@@ -51,9 +71,9 @@
 </div>
 {{formDetails | json}}
 
-<form [formGroup]="userForm">
- <ngx-mat-autocomplete-control  [control]="userForm.controls['userList']" [options]="quesList"
+<!-- <form [formGroup]="allocationForm">
+ <ngx-mat-autocomplete-control  [control]="allocationForm.controls['userList']" [options]="materialList"
   [refId]="'quesId'"
-        [refName]="'quesName'" [label]="'users'" [disabled]="false" [required]="true"
+        [refName]="'materialName'" [label]="'users'" [disabled]="false" [required]="true"
          [appearance]="'outline'"  ></ngx-mat-autocomplete-control>
-</form>
+</form> -->
